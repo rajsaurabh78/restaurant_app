@@ -37,15 +37,40 @@ public class AdminDaoImpl implements AdminDao{
 	}
 
 	@Override
-	public String deleteCustomer(Integer userId) {
-		// TODO Auto-generated method stub
-		return null;
+	public String deleteCustomer(Integer userId) throws CustomerException {
+		String res=null;
+		
+		try(Connection conn=DBUtil.provideConnection()) {
+			PreparedStatement ps=conn.prepareStatement("delete from customer where userId = ?");
+			ps.setInt(1, userId);
+			int x=ps.executeUpdate();
+			if(x>0) {
+				res ="Deleted successfully .";
+			}else
+				throw new CustomerException("Inviled user Id .");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return res;
 	}
 
 	@Override
-	public String deleteAdmin(Integer adminId) {
-		// TODO Auto-generated method stub
-		return null;
+	public String deleteAdmin(Integer adminId) throws AdminException {
+		
+		String res=null;
+		try(Connection conn=DBUtil.provideConnection()) {
+			PreparedStatement ps=conn.prepareStatement("delete from admin where adminId = ?");
+			ps.setInt(1, adminId);
+			int x=ps.executeUpdate();
+			if(x>0) {
+				res ="Deleted successfully .";
+			}else
+				throw new AdminException("Inviled admin Id .");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return res;
+		
 	}
 
 	@Override
