@@ -1,6 +1,6 @@
 package com.modal;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 public class Product {
 	
@@ -8,8 +8,8 @@ public class Product {
 	private String type;
 	private String pName;
 	private double price;
-	private LocalDate expiryDate;
-	private LocalDate mfgDate;
+	private Date expiryDate;
+	private Date mfgDate;
 	private int quantity;
 	
 	public Product() {
@@ -48,19 +48,19 @@ public class Product {
 		this.price = price;
 	}
 
-	public LocalDate getExpiryDate() {
+	public Date getExpiryDate() {
 		return expiryDate;
 	}
 
-	public void setExpiryDate(LocalDate expiryDate) {
+	public void setExpiryDate(Date expiryDate) {
 		this.expiryDate = expiryDate;
 	}
 
-	public LocalDate getMfgDate() {
+	public Date getMfgDate() {
 		return mfgDate;
 	}
 
-	public void setMfgDate(LocalDate mfgDate) {
+	public void setMfgDate(Date mfgDate) {
 		this.mfgDate = mfgDate;
 	}
 
@@ -72,8 +72,7 @@ public class Product {
 		this.quantity = quantity;
 	}
 
-	public Product(int pId, String type, String pName, double price, LocalDate expiryDate, LocalDate mfgDate,
-			int quantity) {
+	public Product(int pId, String type, String pName, double price, Date expiryDate, Date mfgDate, int quantity) {
 		super();
 		this.pId = pId;
 		this.type = type;
@@ -89,5 +88,6 @@ public class Product {
 		return "Product [pId=" + pId + ", type=" + type + ", pName=" + pName + ", price=" + price + ", expiryDate="
 				+ expiryDate + ", mfgDate=" + mfgDate + ", quantity=" + quantity + "]";
 	}
+
 	
 }
