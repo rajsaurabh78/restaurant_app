@@ -26,13 +26,11 @@ public class registerCustomer {
 		String a=sc.next();
 		System.out.println("Enter pinCode");
 		String pin=sc.next();
-		System.out.println("Enter amount");
-		Double am=sc.nextDouble();
 		
 		CustomerDao dao=new CustomerDaoImpl();
 		Customer cus=new Customer();
 		cus.setAddress(a);
-		cus.setAmount(am);
+		cus.setAmount(0);
 		cus.setEmail(e);
 		cus.setMobile(m);
 		cus.setName(n);
