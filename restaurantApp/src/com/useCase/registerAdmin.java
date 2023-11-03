@@ -1,15 +1,17 @@
 package com.useCase;
 
+import java.text.ParseException;
 import java.util.Scanner;
 
 import com.Dao.AdminDao;
 import com.Dao.AdminDaoImpl;
 import com.Exception.AdminException;
+import com.Main.Main;
 import com.modal.Admin;
 
 public class registerAdmin {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 
 		Scanner sc=new Scanner(System.in);
 		System.out.println("Enter following Details to register .");
@@ -37,7 +39,12 @@ public class registerAdmin {
 		cus.setPinCode(pin);
 		try {
 			String res=dao.redisterAdmin(cus);
-			System.out.println(res);
+			if(res!= null) {
+				System.out.println(res);
+				Main.adminMethod();
+			}else {
+				main(args);
+			}
 		} catch (AdminException e1) {
 			e1.getMessage();
 		}

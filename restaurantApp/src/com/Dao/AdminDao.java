@@ -11,7 +11,7 @@ import com.modal.Product;
 public interface AdminDao {
 
 	public String redisterAdmin(Admin admin) throws AdminException;
-	public String logIn(Integer adminId ,String password) throws AdminException;
+	public String logIn(String email ,String password) throws AdminException;
 	public String deleteCustomer(Integer userId) throws CustomerException;
 	public String deleteAdmin(Integer adminId) throws AdminException;
 	public String addProduct(Product product);

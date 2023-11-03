@@ -241,11 +241,11 @@ public class AdminDaoImpl implements AdminDao{
 	}
 
 	@Override
-	public String logIn(Integer adminId, String password) throws AdminException {
+	public String logIn(String email, String password) throws AdminException {
 		String res="";
 		try(Connection conn=DBUtil.provideConnection()) {
-			PreparedStatement ps=conn.prepareStatement("select * from admin where adminId = ? and password=?");
-			ps.setInt(1, adminId);
+			PreparedStatement ps=conn.prepareStatement("select * from admin where email = ? and password=?");
+			ps.setString(1, email);
 			ps.setString(2, password);
 			ResultSet rs= ps.executeQuery();
 			

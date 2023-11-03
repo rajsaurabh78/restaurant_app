@@ -10,7 +10,7 @@ import com.modal.Product;
 public interface CustomerDao {
 	
 	public String registerCustomer(Customer customer) throws CustomerException;
-	public String logIn(Integer userId ,String password) throws CustomerException;
+	public String logIn(String email ,String password) throws CustomerException;
 	public String updateCustomer(Customer customer) throws CustomerException;
 	public List<Product> allProduct() throws ProductException;
 	public List<Product> getProductByName(String name) throws ProductException;

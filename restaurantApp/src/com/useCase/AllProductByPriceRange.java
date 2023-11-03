@@ -6,6 +6,7 @@ import java.util.Scanner;
 import com.Dao.CustomerDao;
 import com.Dao.CustomerDaoImpl;
 import com.Exception.ProductException;
+import com.Main.Main;
 import com.modal.Product;
 
 public class AllProductByPriceRange {
@@ -40,10 +41,25 @@ public class AllProductByPriceRange {
 			System.out.println("Do you want to search more products by price ?(y/n)");
 			String res=sc.next();
 			if(res.equalsIgnoreCase("n")) {
-				System.out.println("Thanks for using my system.");
 				break;
 			}
 		}
+		System.out.println("Press keys according to your choice. ");
+		System.out.println(" ________________________________");
+		System.out.println("|                                |");
+		System.out.println("|  Press 1 for back.             | ");
+		System.out.println("|  Press other key for Exit. 	 | ");
+		System.out.println("|________________________________|");
+		System.out.println();
+		if(sc.hasNextInt()) {
+			int x=sc.nextInt();
+			if(x==1) {
+				Main.customerMethod();;
+			}else
+				System.out.println("Thanks for using my system.");
+		}else
+			System.out.println("Thanks for using my system.");
+		sc.close();
 	}
 
 }

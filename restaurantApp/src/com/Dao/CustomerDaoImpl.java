@@ -190,11 +190,11 @@ public class CustomerDaoImpl implements CustomerDao{
 	}
 
 	@Override
-	public String logIn(Integer userId, String password) throws CustomerException {
+	public String logIn(String Id, String password) throws CustomerException {
 		String res="";
 		try(Connection conn=DBUtil.provideConnection()) {
-			PreparedStatement ps=conn.prepareStatement("select * from customer where userId = ? and password=?");
-			ps.setInt(1, userId);
+			PreparedStatement ps=conn.prepareStatement("select * from customer where email = ? and password=?");
+			ps.setString(1, Id);
 			ps.setString(2, password);
 			ResultSet rs= ps.executeQuery();
 			
@@ -241,28 +241,33 @@ public class CustomerDaoImpl implements CustomerDao{
 			ResultSet rs=ps.executeQuery();
 			if(rs.next()) {
 				do {
-				//	String n=rs.getString("pName");
 					int qnt=rs.getInt("quantity");
 					double price=rs.getInt("price");
-					double total=qnt*price;
+					double total=quantity*price;
 					PreparedStatement ps2=conn.prepareStatement("select amount from customer where userId=?");
 					ps2.setInt(1, userId);
 					ResultSet rs2=ps2.executeQuery();
+					
 					if(rs2.next()) {
 						double amount=rs2.getDouble("amount");
-						if(total<amount) {
-							PreparedStatement ps3=conn.prepareStatement("insert into customer_product(pId,userId) values(?,?)");
+							if(total<amount && qnt>=quantity) {
+							PreparedStatement ps3=conn.prepareStatement("insert into customer_product(pId,userId,quantity) values(?,?,?)");
 							ps3.setInt(1, pId);
 							ps3.setInt(2, userId);
+							ps3.setInt(3, quantity);
 							PreparedStatement ps4=conn.prepareStatement("update customer set amount=amount - ? where userId=?");
-							ps4.setDouble(1, amount);
+							ps4.setDouble(1, total);
 							ps4.setInt(2, userId);
+							PreparedStatement ps5=conn.prepareStatement("update product set quantity=quantity - ? where pId=?");
+							ps5.setInt(1, quantity);
+							ps5.setInt(2, pId);
 							ps3.executeUpdate();
 							ps4.executeUpdate();
+							ps5.executeUpdate();
 							res="Ordered";
 							
 						}else {
-							throw new CustomerException("Insufisient balance.");
+							throw new CustomerException("Insufisient balance or Item not present that much quantity.");
 						}
 					}else {
 						throw new CustomerException("Inviled user id.");
@@ -274,6 +279,7 @@ public class CustomerDaoImpl implements CustomerDao{
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+//			e.printStackTrace();
 		}
 		
 		
@@ -282,8 +288,35 @@ public class CustomerDaoImpl implements CustomerDao{
 
 	@Override
 	public List<Product> myCart(int userId) throws ProductException {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<Product> list=new ArrayList<>();
+		try(Connection conn=DBUtil.provideConnection()) {
+			//PreparedStatement ps=conn.prepareStatement("select * from product where pId=(select pId from customer_product where userId=?)");
+			PreparedStatement ps=conn.prepareStatement("select p.pId , p.pName, p.type ,p.price,p.mfgDate,p.expiryDate,o.quantity from product p  INNER JOIN customer_product o ON p.Pid=o.pId AND o.userId=?");
+			ps.setInt(1, userId);
+			ResultSet rs= ps.executeQuery();
+			
+			while(rs.next()) {
+				int id=rs.getInt("pId");
+				String n=rs.getString("pName");
+				String t=rs.getString("type");
+				double pr=rs.getDouble("price");
+				int qn=rs.getInt("quantity");
+				Date mfg=rs.getDate("mfgDate");
+				Date exp=rs.getDate("expiryDate");
+				
+				Product pd=new Product(id, t, n, pr, exp, mfg, qn);
+				list.add(pd);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if(list.size()>0) {
+			return list;
+		}else {
+			throw new ProductException("Empty list .");
+		}
+		
 	}
 
 }

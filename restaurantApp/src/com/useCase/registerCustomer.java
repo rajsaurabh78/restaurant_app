@@ -38,11 +38,20 @@ public class registerCustomer {
 		cus.setPinCode(pin);
 		try {
 			String res=dao.registerCustomer(cus);
-			System.out.println(res);
+			if(res!= null) {
+				System.out.println(res);
+				System.out.println();
+				System.out.println("You have to login first.");
+				System.out.println();
+				LoginCustomer.main(args);
+			}else {
+				main(args);
+			}
+			
 		} catch (CustomerException e1) {
 			System.out.println(e1.getMessage());
 		}
-
+		
 	}
 
 }
